@@ -1,0 +1,24 @@
+#  TEST ON UBUNTU SERVER 18.04 LTS. INSTALL ON CLEAN SYSTEM  WITH SUDO USER, BUT WITHOUT PYTHON.
+#  FISRT task CHECK PYTHON ON system.
+---
+- hosts: drupal1
+  gather_facts: False
+  become: yes
+  tasks:
+  - name: TEST PYTHON
+    raw: test -e /usr/bin/python
+    changed_when: false
+    failed_when: false
+    register: no_python
+# SECOND task INSTALL , if PYTHON NO IN SYSTEM
+- hosts: drupal1
+  gather_facts: False
+  become: yes
+  tasks:
+  - name: INSTALL PYTHON
+    raw: apt -y update && apt install -y python-minimal
+    when: no_python.rc !=0
+# DRUPAL1 hosts name in inventory file)    
+    
+    
+
